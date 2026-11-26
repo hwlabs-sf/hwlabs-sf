@@ -4,7 +4,7 @@ A small hardware lab in Shenzhen. We do FPGA bring-up, board design, firmware, a
 that proves a board works before it ships.
 
 Most of our work is the unglamorous part: a differential pair that rings at 3.1 GHz, a buck
-converter that drops out at cold start, a ring network that recovers but settles one round late.
+converter that drops out at cold start, a redundant link that heals but settles one round late.
 We like problems that have a measurement attached.
 
 ---
@@ -23,15 +23,15 @@ production if the build goes ahead within 30 days.
 
 **Repositories**
 
-- **[fpga-optical-ring-bench](https://github.com/hwlabs-sf/fpga-optical-ring-bench)** — a sanitized
-  case study of a 10.3125 Gbps bidirectional redundant optical ring on an FPGA (1 master, 3 slaves),
-  plus `ring_audit.py`, a small CLI that checks A/B sequence continuity and slot accounting in the
-  master's telemetry.
 - **[kicad-dfm-precheck](https://github.com/hwlabs-sf/kicad-dfm-precheck)** — a pure-Python KiCad
   S-expression linter that catches thin via annular rings, placeholder part values, and pins left on
   `unconnected-*` nets before the boards are ordered.
 
-Both run on the standard library alone. `python -m unittest` in either directory, no install step.
+It runs on the standard library alone. `python -m unittest` inside the directory, no install step.
+
+Some of our work stays unpublished: client designs are under NDA, and a few internal case studies
+are held back until pending filings are on record. Ask and we will walk you through the relevant
+one on a call.
 
 **How we work**
 
