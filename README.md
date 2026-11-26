@@ -1,11 +1,12 @@
 ### HW Labs Engineering
 
-A small hardware lab in Shenzhen. We do FPGA bring-up, board design, firmware, and the bench
-that proves a board works before it ships.
+A hardware studio in Shenzhen. We take a product from schematic to a unit that
+passes test: the board, the firmware on it, and the bench that proves it.
 
-Most of our work is the unglamorous part: a differential pair that rings at 3.1 GHz, a buck
-converter that drops out at cold start, a redundant link that heals but settles one round late.
-We like problems that have a measurement attached.
+Most of the work is the unglamorous part. A buck converter that drops out at cold
+start, a CAN bus that loses arbitration under load, a pogo fixture that fails a
+good board because one probe wore through. We like problems that have a
+measurement attached.
 
 ---
 
@@ -13,31 +14,42 @@ We like problems that have a measurement attached.
 
 | Discipline | What it covers |
 | :--- | :--- |
-| FPGA & high-speed I/O | Multi-gigabit serial links, SFP+ optics, custom framing, timing closure, on-board capture |
-| Board design & DFM | Schematic to fab package, stack-up, impedance, annular ring and solder-mask checks, dual-source BOM |
-| Firmware & test benches | Bare-metal and RTOS firmware, pogo-pin fixtures, automated bring-up scripts, pass/fail logs a customer can read |
-| Failure analysis | Root-cause a dead board or a flaky link, then hand over the measurement that shows the fix |
+| Product boards | 2–8 layer mixed-signal, power and RF. STM32, ESP32, nRF52, FPGA. USB-C PD, battery management, motor drive, sensor front ends. |
+| Embedded firmware | Bare metal and RTOS. Field-oriented control, CAN-FD, BLE, LoRa, Wi-Fi. Bootloaders, DFU, production provisioning and calibration. |
+| Factory test | Pogo-pin fixtures, automated bring-up, per-unit pass/fail logs a line operator can read, burn-in and end-of-line calibration. |
+| DFM and sourcing | Stack-up, impedance, annular ring and solder mask checks, dual-source BOM, 7–14 day PCBA in Shenzhen. |
 
-Engagements are fixed-scope. A DFM + dual-source BOM audit is **$690**, credited in full against
-production if the build goes ahead within 30 days.
+Engagements are fixed-scope. A DFM + dual-source BOM audit is **$690**, credited in
+full against production if the build goes ahead within 30 days.
 
 **Repositories**
 
-- **[kicad-dfm-precheck](https://github.com/hwlabs-sf/kicad-dfm-precheck)** — a pure-Python KiCad
-  S-expression linter that catches thin via annular rings, placeholder part values, and pins left on
-  `unconnected-*` nets before the boards are ordered.
+- **[foc-canfd-joint-node](https://github.com/hwlabs-sf/foc-canfd-joint-node)** — a 42 mm,
+  48 V / 15 A brushless joint controller for humanoid and legged robots: STM32G431, DRV8323RS,
+  six 1.45 mΩ FETs, Kelvin-sensed shunts, a 14-bit on-axis encoder, CAN-FD, and the field-oriented
+  control firmware that runs it.
+- **[sfp-10g-bert-pocket](https://github.com/hwlabs-sf/sfp-10g-bert-pocket)** — a
+  10.3125 Gbit/s SFP+ bit-error-rate tester: 64-bit parallel PRBS-31 in Verilog, an
+  SFF-8472 poller over I2C, a four-layer AC-coupled carrier, and a host CLI that
+  turns diagnostic bytes into dBm. Both RTL testbenches and the DFM check run in
+  the test suite.
+- **[kicad-dfm-precheck](https://github.com/hwlabs-sf/kicad-dfm-precheck)** — the
+  linter we run before every fab release: a pure-Python KiCad S-expression checker
+  for thin annular rings, placeholder part values, and pins left on
+  `unconnected-*` nets.
 
-It runs on the standard library alone. `python -m unittest` inside the directory, no install step.
+The Python tools run on the standard library alone. `python -m unittest` inside
+any of them, no install step.
 
-Some of our work stays unpublished: client designs are under NDA, and a few internal case studies
-are held back until pending filings are on record. Ask and we will walk you through the relevant
-one on a call.
+Client production boards stay under mutual NDA, so what is public here is
+representative reference designs and the tooling we use on every board — not
+customer work. Ask and we will walk you through the relevant one on a call.
 
 **How we work**
 
 - One page of scope, a fixed price, and a date. No retainers.
-- Every claim in a report has a measurement behind it: a scope capture, a log line, a photo of the
-  fixture. If we did not measure it, we say so.
+- Every claim in a report has a measurement behind it: a scope capture, a log line,
+  a photo of the fixture. If we did not measure it, we say so.
 - Files we hand over are the ones you can rebuild from: sources, not just outputs.
 - We are in UTC+8 and answer within one business day.
 
